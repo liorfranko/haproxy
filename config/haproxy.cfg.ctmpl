@@ -1,8 +1,11 @@
 global
   debug                                   # uncomment to enable debug mode for HAProxy
+  log 127.0.0.1:514 local0
 
 defaults
+  log global
   mode http                                # enable http mode which gives of layer 7 filtering
+  option httplog
   timeout connect 5000ms                   # max time to wait for a connection attempt to a server to succeed
   timeout client 50000ms                   # max inactivity time on the client side
   timeout server 50000ms                   # max inactivity time on the server side
