@@ -16,7 +16,7 @@ resolvers consul
 
 backend legacy                             # define a group of backend servers to handle legacy requests
   balance roundrobin
-  server-template web 5 _web._tcp.service.consul resolvers consul check resolve-opts allow-dup-ip init-addr none
+  server-template web 5 _haproxy_web._tcp.service.consul resolvers consul check resolve-opts allow-dup-ip init-addr none
 
 frontend app                          # define what port to listed to for HAProxy
   bind *:{{ key "bind_port" }}

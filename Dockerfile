@@ -11,4 +11,5 @@ ADD supervisor.conf /opt/supervisor/
 COPY 49-haproxy.conf /etc/rsyslog.d/49-haproxy.conf
 COPY haproxy.yml /etc/filebeat/modules.d/haproxy.yml
 COPY filebeat.yml /etc/filebeat/filebeat.yml
+RUN sed -i '/imklog/s/^/#/' /etc/rsyslog.conf
 CMD ["supervisord", "--nodaemon", "--configuration", "/opt/supervisor/supervisor.conf"]
