@@ -2,11 +2,11 @@ version: "3.7"
 services:
     haproxy:
         build:
-            context: .
+            context: haproxy/
         ports:
             - 80:80
         volumes:
-            - /Users/liorf/PycharmProjects/haproxy/config:/config/
+            - /Users/liorf/PycharmProjects/haproxy/haproxy/config:/config/
     elasticsearch:
         ports:
             - 9200:9200
