@@ -1,6 +1,6 @@
 FROM debian
 RUN apt-get update
-RUN apt-get install -y curl haproxy procps supervisor vim dnsutils tcpdump rsyslog wget gnupg2 apt-transport-https
+RUN apt-get install -y curl haproxy procps supervisor vim dnsutils tcpdump rsyslog wget gnupg2 apt-transport-https net-tools kafkacat
 COPY consul-template /opt/consul/consul-template 
 RUN mkdir -p /opt/supervisor
 RUN mkdir -p /config
@@ -12,5 +12,4 @@ COPY 49-haproxy.conf /etc/rsyslog.d/49-haproxy.conf
 COPY haproxy.yml /etc/filebeat/modules.d/haproxy.yml
 COPY filebeat.yml /etc/filebeat/filebeat.yml
 RUN sed -i '/imklog/s/^/#/' /etc/rsyslog.conf
-RUN filebeat setup -e
 CMD ["supervisord", "--nodaemon", "--configuration", "/opt/supervisor/supervisor.conf"]
