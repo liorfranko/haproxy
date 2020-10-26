@@ -177,8 +177,8 @@ output.kafka:
   hosts: ["kafka:9092"]
   # message topic selection + partitioning
   topic: 'filebeat'
-  codec.format:
-    string: '%{[@timestamp]} %{[message]}'
+  codec.json:
+    pretty: false
   partition.round_robin:
       reachable_only: false
   required_acks: 1

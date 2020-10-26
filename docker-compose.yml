@@ -20,6 +20,10 @@ services:
         image: docker.elastic.co/kibana/kibana:7.9.2
         links:
             - elasticsearch:elasticsearch
+    logstash:
+        image: docker.elastic.co/logstash/logstash:7.9.3
+        volumes: 
+            - /Users/liorf/PycharmProjects/haproxy/logstash/pipeline:/usr/share/logstash/pipeline/
     web:
         build:
             context: node/
