@@ -1,0 +1,34 @@
+FROM docker.io/bitnami/minideb:buster
+LABEL maintainer "Bitnami <containers@bitnami.com>"
+
+ENV HOME="/" \
+    OS_ARCH="amd64" \
+    OS_FLAVOUR="debian-10" \
+    OS_NAME="linux"
+
+COPY prebuildfs /
+# Install required system packages and dependencies
+RUN install_packages acl ca-certificates curl gzip libc6 procps tar zlib1g
+RUN . /opt/bitnami/scripts/libcomponent.sh && component_unpack "java" "11.0.9-0" --checksum cc0a6b2752289a46277ffbbf0912062535805a66b3b33befec942fafd9d17c7c
+RUN . /opt/bitnami/scripts/libcomponent.sh && component_unpack "render-template" "1.0.0-2" --checksum f1bee333423f6627d795ea9e0b6a89c18d2e5c2e2d015bb4620f040f1d520cf6
+RUN . /opt/bitnami/scripts/libcomponent.sh && component_unpack "kafka" "2.6.0-0" --checksum 9aa9c4f33b7d9660e00b600f64e1150da33de1623feeaa60a731fabdb6adb1eb
+RUN . /opt/bitnami/scripts/libcomponent.sh && component_unpack "gosu" "1.12.0-2" --checksum 4d858ac600c38af8de454c27b7f65c0074ec3069880cb16d259a6e40a46bbc50
+RUN apt-get update && apt-get upgrade -y && \
+    rm -r /var/lib/apt/lists /var/cache/apt/archives
+RUN chmod g+rwX /opt/bitnami
+RUN ln -s /opt/bitnami/scripts/kafka/entrypoint.sh /entrypoint.sh
+RUN ln -s /opt/bitnami/scripts/kafka/run.sh /run.sh
+
+COPY rootfs /
+RUN /opt/bitnami/scripts/kafka/postunpack.sh
+ENV BITNAMI_APP_NAME="kafka" \
+    BITNAMI_IMAGE_VERSION="2.6.0-debian-10-r66" \
+    PATH="/opt/bitnami/java/bin:/opt/bitnami/common/bin:/opt/bitnami/kafka/bin:$PATH"
+
+EXPOSE 9092
+COPY jolokia-jvm-1.6.2-agent.jar /
+RUN chmod a+x /jolokia-jvm-1.6.2-agent.jar
+
+USER 1001
+ENTRYPOINT [ "/opt/bitnami/scripts/kafka/entrypoint.sh" ]
+CMD [ "/opt/bitnami/scripts/kafka/run.sh" ]

@@ -1,0 +1,21 @@
+metricbeat.config.modules:
+  path: ${path.config}/modules.d/*.yml
+  reload.enabled: false
+
+processors:
+  - add_cloud_metadata: ~
+  - add_docker_metadata: ~
+
+output.elasticsearch:
+  hosts: '${ELASTICSEARCH_HOSTS:elasticsearch:9200}'
+  username: '${ELASTICSEARCH_USERNAME:}'
+  password: '${ELASTICSEARCH_PASSWORD:}'
+
+metricbeat.modules:
+# Kafka metrics collected using the Kafka protocol
+- module: kafka
+  metricsets:
+   - partition
+   - consumergroup
+  period: 10s
+  hosts: ["kafka1:9092", "kafka2:9092"]
