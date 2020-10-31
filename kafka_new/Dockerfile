@@ -37,6 +37,8 @@ RUN apk add --no-cache bash curl jq docker \
  && rm glibc-${GLIBC_VERSION}.apk
 
 COPY overrides /opt/overrides
+COPY jolokia-jvm-1.6.2-agent.jar /
+RUN chmod a+x /jolokia-jvm-1.6.2-agent.jar
 
 VOLUME ["/kafka"]
 

@@ -13,9 +13,15 @@ output.elasticsearch:
 
 metricbeat.modules:
 # Kafka metrics collected using the Kafka protocol
+# - module: kafka
+#   metricsets:
+#    - partition
+#    - consumergroup
+#   period: 10s
+#   hosts: ["kafka1:9092"]
+#   client_id: metricbeat
 - module: kafka
   metricsets:
-   - partition
-   - consumergroup
+    - broker
   period: 10s
-  hosts: ["kafka1:9092", "kafka2:9092"]
+  hosts: ["kafka1:8778"]  
