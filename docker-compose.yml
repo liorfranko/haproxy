@@ -22,9 +22,6 @@ services:
         image: docker.elastic.co/logstash/logstash:7.9.3
         volumes: 
             - /Users/liorf/PycharmProjects/haproxy/logstash/pipeline:/usr/share/logstash/pipeline/
-    # metricbeat:
-    #     build:
-    #         context: metricbeat/
     web:
         build:
             context: node/
@@ -42,9 +39,14 @@ services:
         build: kafka_new/
         ports:
             - "9192:9092"
-            # - "8778:8778"
         environment:
             KAFKA_ADVERTISED_HOST_NAME: 192.168.1.111
             KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-            # KAFKA_JMX_OPTS: "-javaagent:/jolokia-jvm-1.6.2-agent.jar=port=8778,host=kafka1 -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=kafka1 -Dcom.sun.management.jmxremote.host=kafka1 -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.rmi.port=9999 -Djava.net.preferIPv4Stack=true"
-    
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+    kafka_manager:
+        image: hlebalbau/kafka-manager:stable
+        ports:
+        - "9000:9000"
+        environment:
+            ZK_HOSTS: "zookeeper:2181"

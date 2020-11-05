@@ -174,7 +174,7 @@ setup.kibana:
 # ================================= Processors =================================
 output.kafka:
   # initial brokers for reading cluster metadata
-  hosts: ["kafka1:9092", "kafka2:9092"]
+  hosts: ["kafka1:9092"]
   # message topic selection + partitioning
   topic: 'filebeat'
   codec.json:
